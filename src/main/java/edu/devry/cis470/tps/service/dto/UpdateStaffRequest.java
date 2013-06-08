@@ -2,6 +2,7 @@ package edu.devry.cis470.tps.service.dto;
 
 public class UpdateStaffRequest {
 
+	private Long staffId;
 	private Integer yearsExperience;
 	private String educationLevel;
 	private Integer desiredSalary;
@@ -24,6 +25,10 @@ public class UpdateStaffRequest {
 		return pictureData;
 	}
 
+	public Long getStaffId() {
+		return staffId;
+	}
+
 	public Integer getYearsExperience() {
 		return yearsExperience;
 	}
@@ -42,6 +47,10 @@ public class UpdateStaffRequest {
 
 	public void setPictureData(final byte[] pictureData) {
 		this.pictureData = pictureData;
+	}
+
+	public void setStaffId(final Long staffId) {
+		this.staffId = staffId;
 	}
 
 	public void setYearsExperience(final Integer yearsExperience) {

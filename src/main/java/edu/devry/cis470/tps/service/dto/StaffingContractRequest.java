@@ -4,19 +4,19 @@ import java.util.List;
 
 public class StaffingContractRequest {
 
-	private List<Integer> staffIds;
+	private List<Long> staffIds;
 	private String city;
-	private Integer desiredSalary;
+	private Long desiredSalary;
 
 	public String getCity() {
 		return city;
 	}
 
-	public Integer getDesiredSalary() {
+	public Long getDesiredSalary() {
 		return desiredSalary;
 	}
 
-	public List<Integer> getStaffIds() {
+	public List<Long> getStaffIds() {
 		return staffIds;
 	}
 
@@ -24,11 +24,11 @@ public class StaffingContractRequest {
 		this.city = city;
 	}
 
-	public void setDesiredSalary(final Integer desiredSalary) {
+	public void setDesiredSalary(final Long desiredSalary) {
 		this.desiredSalary = desiredSalary;
 	}
 
-	public void setStaffIds(final List<Integer> staffIds) {
+	public void setStaffIds(final List<Long> staffIds) {
 		this.staffIds = staffIds;
 	}
 }
