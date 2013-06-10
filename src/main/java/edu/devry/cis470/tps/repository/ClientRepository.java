@@ -8,4 +8,6 @@ import edu.devry.cis470.tps.domain.Client;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
+	Client findByUsername(String username);
+
 }

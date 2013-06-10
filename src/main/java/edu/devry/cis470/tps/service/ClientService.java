@@ -7,12 +7,14 @@ import edu.devry.cis470.tps.domain.Staff;
 import edu.devry.cis470.tps.domain.StaffingContract;
 import edu.devry.cis470.tps.service.dto.BrowseRequest;
 import edu.devry.cis470.tps.service.dto.StaffingContractRequest;
+import edu.devry.cis470.tps.service.impl.NonUniqueUsernameException;
 
 public interface ClientService {
 
 	List<Staff> browseCandidates(BrowseRequest request);
 
-	Client createNewClient(String username, String password);
+	Client createNewClient(String username, String password)
+			throws NonUniqueUsernameException;
 
 	StaffingContract createStaffingContract(StaffingContractRequest request);
 

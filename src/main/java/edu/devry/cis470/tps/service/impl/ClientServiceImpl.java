@@ -3,6 +3,7 @@ package edu.devry.cis470.tps.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
@@ -19,6 +20,7 @@ import edu.devry.cis470.tps.service.ClientService;
 import edu.devry.cis470.tps.service.dto.BrowseRequest;
 import edu.devry.cis470.tps.service.dto.StaffingContractRequest;
 
+@Service
 public class ClientServiceImpl implements ClientService {
 
 	@Autowired
@@ -32,12 +34,12 @@ public class ClientServiceImpl implements ClientService {
 
 	private BooleanExpression addClause(final BooleanExpression query,
 			final BooleanExpression and) {
-		if (null == query) {
+		if (null == query)
 			return and;
-		}
 		return query.and(and);
 	}
 
+	@Override
 	public List<Staff> browseCandidates(final BrowseRequest request) {
 		BooleanExpression query = null;
 		if (null != request.getCity()) {
@@ -64,29 +66,39 @@ public class ClientServiceImpl implements ClientService {
 		return Lists.newArrayList(staffRepository.findAll(query));
 	}
 
+	@Override
 	@Transactional
-	public Client createNewClient(final String username, final String password) {
+	public Client createNewClient(final String username, final String password)
+			throws NonUniqueUsernameException {
+		if (null != clientRepository.findByUsername(username))
+			throw new NonUniqueUsernameException();
+
 		final Client client = new Client();
 		client.setUsername(username);
 		client.setPassword(password);
 		return clientRepository.save(client);
 	}
 
+	@Override
 	public StaffingContract createStaffingContract(
 			final StaffingContractRequest request) {
 		final StaffingContract contract = new StaffingContract();
 		contract.setLocation(request.getCity());
 		contract.setDesiredSalary(request.getDesiredSalary());
 
-		staffRepository.findAll(request.getStaffIds());
+		final Iterable<Staff> desiredStaff = staffRepository.findAll(request
+				.getStaffIds());
+		contract.setDesiredStaff(Lists.newArrayList(desiredStaff));
 		return staffingContractRepository.save(contract);
 	}
 
+	@Override
 	public List<StaffingContract> getAllStaffingContracts(final Long clientId) {
 		final Client client = clientRepository.findOne(clientId);
-		return staffingContractRepository.findAllByClient(client);
+		return client.getContracts();
 	}
 
+	@Override
 	public StaffingContract getStaffingContract(final Long contractId) {
 		return staffingContractRepository.findOne(contractId);
 	}
