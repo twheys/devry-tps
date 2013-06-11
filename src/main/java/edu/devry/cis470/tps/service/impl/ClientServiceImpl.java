@@ -75,14 +75,15 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	@Transactional
-	public Client createNewClient(final String username, final String password)
-			throws NonUniqueUsernameException {
+	public Client createNewClient(final String username, final String password,
+			final String email) throws NonUniqueUsernameException {
 		if (null != clientRepository.findByUsername(username))
 			throw new NonUniqueUsernameException();
 
 		final Client client = new Client();
 		client.setUsername(username);
 		client.setPassword(password);
+		client.setEmail(email);
 		return clientRepository.save(client);
 	}
 

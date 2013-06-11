@@ -12,6 +12,9 @@ public class User extends IdEntity {
 	@Column(unique = false, nullable = false)
 	private String password;
 
+	@Column(unique = true, nullable = false)
+	private String email;
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (this == obj)
@@ -27,6 +30,10 @@ public class User extends IdEntity {
 		} else if (!username.equals(other.username))
 			return false;
 		return true;
+	}
+
+	public String getEmail() {
+		return email;
 	}
 
 	public String getPassword() {
@@ -45,6 +52,10 @@ public class User extends IdEntity {
 		return result;
 	}
 
+	public void setEmail(final String email) {
+		this.email = email;
+	}
+
 	public void setPassword(final String password) {
 		this.password = password;
 	}
@@ -55,7 +66,8 @@ public class User extends IdEntity {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=<PROTECTED>]";
+		return "User [username=" + username + ", password=<PROTECTED>, email="
+				+ email + "]";
 	}
 
 }

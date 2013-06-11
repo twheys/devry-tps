@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Client Page</title>
+<style type="text/css">
+<!--
+body {
+	font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif;
+	background: #42413C;
+	margin: 0;
+	padding: 0;
+	color: #000;
+}
+
+/* ~~ Element/tag selectors ~~ */
+ul, ol, dl { /* Due to variations between browsers, it's best practices to zero padding and margin on lists. For consistency, you can either specify the amounts you want here, or on the list items (LI, DT, DD) they contain. Remember that what you do here will cascade to the .nav list unless you write a more specific selector. */
+	padding: 0;
+	margin: 0;
+}
+h1, h2, h3, h4, h5, h6, p {
+	margin-top: 0;	 /* removing the top margin gets around an issue where margins can escape from their containing div. The remaining bottom margin will hold it away from any elements that follow. */
+	padding-right: 15px;
+	padding-left: 15px; /* adding the padding to the sides of the elements within the divs, instead of the divs themselves, gets rid of any box model math. A nested div with side padding can also be used as an alternate method. */
+}
+a img { /* this selector removes the default blue border displayed in some browsers around an image when it is surrounded by a link */
+	border: none;
+}
+/* ~~ Styling for your site's links must remain in this order - including the group of selectors that create the hover effect. ~~ */
+a:link {
+	color: #42413C;
+	text-decoration: underline; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
+}
+a:visited {
+	color: #6E6C64;
+	text-decoration: underline;
+}
+a:hover, a:active, a:focus { /* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
+	text-decoration: none;
+}
+
+/* ~~ this fixed width container surrounds the other divs ~~ */
+.container {
+	width: 960px;
+	background: #FFF;
+	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
+}
+
+/* ~~ the header is not given a width. It will extend the full width of your layout. It contains an image placeholder that should be replaced with your own linked logo ~~ */
+.header {
+	background: #ADB96E;
+}
+
+/* ~~ This is the layout information. ~~ 
+
+1) Padding is only placed on the top and/or bottom of the div. The elements within this div have padding on their sides. This saves you from any "box model math". Keep in mind, if you add any side padding or border to the div itself, it will be added to the width you define to create the *total* width. You may also choose to remove the padding on the element in the div and place a second div within it with no width and the padding necessary for your design.
+
+*/
+
+.content {
+	padding: 50px 0;
+}
+
+/* ~~ The footer ~~ */
+.footer {
+	padding: 10px 0;
+	background: #CCC49F;
+}
+
+/* ~~ miscellaneous float/clear classes ~~ */
+.fltrt {  /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+	float: right;
+	margin-left: 8px;
+}
+.fltlft { /* this class can be used to float an element left in your page. The floated element must precede the element it should be next to on the page. */
+	float: left;
+	margin-right: 8px;
+}
+.clearfloat { /* this class can be placed on a <br /> or empty div as the final element following the last floated div (within the #container) if the #footer is removed or taken out of the #container */
+	clear:both;
+	height:0;
+	font-size: 1px;
+	line-height: 0px;
+}
+.TableHeader2 {
+	font-size: large;
+	color: #693;
+}
+.bold {
+	font-weight: bold;
+}
+.directions {
+	font-size: small;
+	text-decoration: underline;
+	color: #000;
+}
+-->
+</style></head>
+
+<body>
+
+<div class="container">
+  <div class="header"><a href="#"><img src="Website Images/TPS2.png" alt="Insert Logo Here" name="Insert_logo" width="960" height="200" id="Insert_logo" style="background: #C6D580; display:block;" /></a> 
+    <!-- end .header --></div>
+  <div class="content">
+    <table width="961" border="0">
+      <tr>
+        <td width="379" bgcolor="#FFFFFF" class="TableHeader2"><div align="center">Staff Search</div></td>
+        <td width="19">&nbsp;</td>
+        <td width="231"><div align="center" class="TableHeader2">Staff Request</div></td>
+        <td width="314" class="TableHeader2"><div align="center">Request Status</div></td>
+      </tr>
+      <tr>
+        <td bgcolor="#FFFFFF" class="TableHeader2"><div align="center"><span class="directions">enter search criteria</span></div></td>
+        <td>&nbsp;</td>
+        <td class="directions"><div align="center">Enter up to three Staff IDs</div></td>
+        <td class="TableHeader2"><div align="center"><span class="directions">Check status of staff requests</span></div></td>
+      </tr>
+      <tr>
+      <form action="staffSearch_form.asp">
+        <td><p align="left">Years of Experience:
+<input name="txtExperience" type="text" size="3" maxlength="2" />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desired Salary:
+    <input name="txtSalary" type="text" size="8" maxlength="6" />
+    <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Education:
+<select name="select">
+  <option value="High School">High School</option>
+  <option value="Associates">Associates</option>
+  <option value="Bachelors">Bachelors</option>
+  <option value="Masters">Masters</option>
+  <option value="Doctorate">Doctorate</option>
+</select>
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City:
+            <select name="select">
+              <option value="Alpena" selected="selected">Alpena</option>
+              <option value="Gaylord">Gaylord</option>
+              <option value="Harbor Springs">Harbor Springs</option>
+              <option value="Petoskey">Petoskey</option>
+              <option value="Wolverine">Wolverine</option>
+            </select>
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input name="btnSearch" type="button" id="btnSearch" value="Search" /> <!--This button should perform the search and open the search results page where it displays staff meeting the criteria-->
+            &nbsp;&nbsp;&nbsp;
+            <input name="btnCancel" type="reset" id="btnCancel" value="Cancel" />
+            </form>
+        <td>        
+      
+      </td>
+        <td><form action="demo_form.asp">
+          <div align="center">
+            <p>StaffID:
+              <input type="text" name="staffIDOne"><br>
+              StaffID: <input type="text" name="StaffIDTwo"><br>
+              StaffID: <input type="text" name="StaffIDThree"><br>
+              Position: <input type="text" name="typeOfWork"><br />
+              Salary: <input type="text" name="Salary"><br />
+              City: <br />
+              <select name="select">
+              <option value="Alpena" selected="selected">Alpena</option>
+              <option value="Gaylord">Gaylord</option>
+              <option value="Harbor Springs">Harbor Springs</option>
+              <option value="Petoskey">Petoskey</option>
+              <option value="Wolverine">Wolverine</option>
+            </select>
+            </p>
+            <p>              &nbsp;
+              <input type="button" value="Submit Request"> <!--USer can enter up to three staff Ids to make a staffing quest, must also enter the type of work, location, and salary offered. A unique request ID should be generated and sent to the email on file for the clients account-->
+            </p>
+          </div>
+        </form></td>
+        <td width="314"><p><form action="demo_form.asp">
+          <p align="center">Request ID:
+  <input type="text" name="statusCheck">
+          </p>
+          <p align="center"><br>
+            
+            <input type="button" value="Check Status"> <!--User enters staffing request ID number and results are returned below or a message of invalid ID-->
+          </p>
+        </form></p></td>
+      </tr>
+    </table>
+    <h1>&nbsp;</h1>
+  <!-- end .content --></div>
+  <div class="footer">
+    <p><a href="Home Page.html">Contact Us</a></p>
+    
+  <!-- end .footer --></div>
+  <!-- end .container --></div>
+</body>
+</html>

@@ -3,7 +3,6 @@ package edu.devry.cis470.tps.test;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +60,7 @@ public abstract class AbstractTest {
 		final Staff staff = new Staff();
 		staff.setUsername(username);
 		staff.setPassword("123");
+		staff.setEmail(username + "@email.com");
 		staff.setCity(location);
 		staff.setEducationLevel(educationLevel);
 		staff.setDesiredSalary(desiredSalary);
@@ -68,8 +68,7 @@ public abstract class AbstractTest {
 		return staffRepository.save(staff);
 	}
 
-	protected byte[] loadPicture(final String string) throws IOException {
-		final InputStream is = this.getClass().getResourceAsStream(string);
-		return IOUtils.toByteArray(is);
+	protected InputStream loadPicture(final String string) throws IOException {
+		return this.getClass().getResourceAsStream(string);
 	}
 }

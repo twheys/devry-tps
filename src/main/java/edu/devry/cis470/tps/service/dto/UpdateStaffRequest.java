@@ -6,7 +6,6 @@ public class UpdateStaffRequest {
 	private String educationLevel;
 	private Integer desiredSalary;
 	private String city;
-	private byte[] pictureData;
 
 	public String getCity() {
 		return city;
@@ -18,10 +17,6 @@ public class UpdateStaffRequest {
 
 	public String getEducationLevel() {
 		return educationLevel;
-	}
-
-	public byte[] getPictureData() {
-		return pictureData;
 	}
 
 	public Integer getYearsExperience() {
@@ -38,10 +33,6 @@ public class UpdateStaffRequest {
 
 	public void setEducationLevel(final String educationLevel) {
 		this.educationLevel = educationLevel;
-	}
-
-	public void setPictureData(final byte[] pictureData) {
-		this.pictureData = pictureData;
 	}
 
 	public void setYearsExperience(final Integer yearsExperience) {

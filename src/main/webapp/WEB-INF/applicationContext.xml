@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+    	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	 	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<context:component-scan base-package="edu.devry.cis470.tps" />
+	 
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+	<mvc:resources mapping="/r/**" location="/static/" />
+	<mvc:view-controller path="/contact.html" view-name="contact" />
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<sec:http pattern="/resources/**" security="none" />
+
+	<sec:http use-expressions="true">
+		<sec:intercept-url pattern="/" access="permitAll" />
+		
+		<sec:intercept-url pattern="/manage" access="hasRole('ROLE_CLIENT')" />
+		<sec:intercept-url pattern="/profile" access="hasRole('ROLE_STAFF')" />
+		
+		<sec:form-login username-parameter="username" password-parameter="password"
+		 	authentication-success-handler-ref="AuthenticationSuccessHandler"
+			login-page="/login" 
+			login-processing-url="/gateway"
+			authentication-failure-url="/login?error=1" />
+		<!-- <remember-me key="1234567890"  /> -->
+		<sec:logout logout-url="/logout" logout-success-url="/"/>
+	</sec:http>
+	
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider user-service-ref="TPSUserService" />
+	</sec:authentication-manager>
+</beans>

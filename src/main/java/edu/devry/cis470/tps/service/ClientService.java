@@ -13,7 +13,7 @@ public interface ClientService {
 
 	List<Staff> browseCandidates(BrowseRequest request);
 
-	Client createNewClient(String username, String password)
+	Client createNewClient(String username, String password, String email)
 			throws NonUniqueUsernameException;
 
 	StaffingContract createStaffingContract(final Long clientId,

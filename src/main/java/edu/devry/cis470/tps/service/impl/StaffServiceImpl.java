@@ -1,5 +1,9 @@
 package edu.devry.cis470.tps.service.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,14 +22,15 @@ public class StaffServiceImpl implements StaffService {
 
 	@Override
 	@Transactional
-	public Staff createNewStaff(final String username, final String password)
-			throws NonUniqueUsernameException {
+	public Staff createNewStaff(final String username, final String password,
+			final String email) throws NonUniqueUsernameException {
 		if (null != staffRepository.findByUsername(username))
 			throw new NonUniqueUsernameException();
 
 		final Staff staff = new Staff();
 		staff.setUsername(username);
 		staff.setPassword(password);
+		staff.setEmail(email);
 		return staffRepository.save(staff);
 	}
 
@@ -41,7 +46,16 @@ public class StaffServiceImpl implements StaffService {
 		staff.setDesiredSalary(request.getDesiredSalary());
 		staff.setEducationLevel(educationLevel);
 		staff.setYearsExperience(request.getYearsExperience());
-		staff.setPicture(request.getPictureData());
+		return staffRepository.save(staff);
+	}
+
+	@Override
+	public Staff updateStaffPicture(final Long staffId, final InputStream stream)
+			throws IOException {
+		final Staff staff = staffRepository.findOne(staffId);
+
+		final byte[] pictureData = IOUtils.toByteArray(stream);
+		staff.setPicture(pictureData);
 		return staffRepository.save(staff);
 	}
 

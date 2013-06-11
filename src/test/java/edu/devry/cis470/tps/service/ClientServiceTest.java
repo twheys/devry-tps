@@ -22,7 +22,8 @@ public class ClientServiceTest extends AbstractTest {
 	public void testCreateNewClient() throws NonUniqueUsernameException {
 		final String username = "client01";
 		final String password = "123456";
-		final Client client = clientService.createNewClient(username, password);
+		final Client client = clientService.createNewClient(username, password,
+				"client01@email.com");
 
 		assertNotNull(client.getId());
 		assertEquals(username, client.getUsername());
@@ -31,9 +32,12 @@ public class ClientServiceTest extends AbstractTest {
 
 	@Test
 	public void testCreateStaffingContract() throws NonUniqueUsernameException {
-		final Staff staff1 = staffService.createNewStaff("staff02", "123");
-		final Staff staff2 = staffService.createNewStaff("staff03", "123");
-		final Staff staff3 = staffService.createNewStaff("staff04", "123");
+		final Staff staff1 = staffService.createNewStaff("staff02", "123",
+				"staff02@email.com");
+		final Staff staff2 = staffService.createNewStaff("staff03", "123",
+				"staff03@email.com");
+		final Staff staff3 = staffService.createNewStaff("staff04", "123",
+				"staff04@email.com");
 
 		final StaffingContractRequest request = new StaffingContractRequest();
 		request.setCity("Washington, DC");
@@ -41,7 +45,8 @@ public class ClientServiceTest extends AbstractTest {
 		request.setStaffIds(Lists.newArrayList(staff1.getId(), staff2.getId(),
 				staff3.getId()));
 
-		final Client client = clientService.createNewClient("client02", "123");
+		final Client client = clientService.createNewClient("client02", "123",
+				"staff02@email.com");
 
 		final StaffingContract contract = clientService.createStaffingContract(
 				client.getId(), request);
@@ -57,14 +62,16 @@ public class ClientServiceTest extends AbstractTest {
 	@Transactional
 	@Test
 	public void testGetStaffingContract() throws NonUniqueUsernameException {
-		final Staff staff1 = staffService.createNewStaff("staff05", "123");
+		final Staff staff1 = staffService.createNewStaff("staff05", "123",
+				"staff05@email.com");
 
 		final StaffingContractRequest request = new StaffingContractRequest();
 		request.setCity("Washington, DC");
 		request.setDesiredSalary(45000L);
 		request.setStaffIds(Lists.newArrayList(staff1.getId()));
 
-		final Client client = clientService.createNewClient("client03", "123");
+		final Client client = clientService.createNewClient("client03", "123",
+				"client03@email.com");
 
 		final StaffingContract contract = clientService.createStaffingContract(
 				client.getId(), request);
@@ -81,7 +88,7 @@ public class ClientServiceTest extends AbstractTest {
 	@Test(expected = NonUniqueUsernameException.class)
 	public void testUniqueUsernameConstraint()
 			throws NonUniqueUsernameException {
-		clientService.createNewClient("staff08", "123");
-		clientService.createNewClient("staff08", "123");
+		clientService.createNewClient("staff08", "123", "staff08@email.com");
+		clientService.createNewClient("staff08", "123", "staff08@email.com");
 	}
 }
