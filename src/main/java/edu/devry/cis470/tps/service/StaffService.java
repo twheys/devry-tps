@@ -9,5 +9,5 @@ public interface StaffService {
 	Staff createNewStaff(String username, String password)
 			throws NonUniqueUsernameException;
 
-	Staff updateStaff(UpdateStaffRequest request);
+	Staff updateStaff(Long staffId, UpdateStaffRequest request);
 }

@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import com.mysema.query.types.expr.BooleanExpression;
 
 import edu.devry.cis470.tps.domain.Client;
+import edu.devry.cis470.tps.domain.EducationLevel;
 import edu.devry.cis470.tps.domain.QStaff;
 import edu.devry.cis470.tps.domain.Staff;
 import edu.devry.cis470.tps.domain.StaffingContract;
@@ -17,6 +18,7 @@ import edu.devry.cis470.tps.repository.ClientRepository;
 import edu.devry.cis470.tps.repository.StaffRepository;
 import edu.devry.cis470.tps.repository.StaffingContractRepository;
 import edu.devry.cis470.tps.service.ClientService;
+import edu.devry.cis470.tps.service.EducationLevelService;
 import edu.devry.cis470.tps.service.dto.BrowseRequest;
 import edu.devry.cis470.tps.service.dto.StaffingContractRequest;
 
@@ -32,6 +34,9 @@ public class ClientServiceImpl implements ClientService {
 	@Autowired
 	private StaffRepository staffRepository;
 
+	@Autowired
+	private EducationLevelService educationLevelComparator;
+
 	private BooleanExpression addClause(final BooleanExpression query,
 			final BooleanExpression and) {
 		if (null == query)
@@ -41,26 +46,28 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public List<Staff> browseCandidates(final BrowseRequest request) {
+
 		BooleanExpression query = null;
 		if (null != request.getCity()) {
 			query = addClause(query, QStaff.staff.city.eq(request.getCity()));
 		}
 		if (null != request.getEducationLevel()) {
+			final List<EducationLevel> educationLevels = educationLevelComparator
+					.getEducationLevelsForMinimum(request.getEducationLevel());
 			query = addClause(query,
-					QStaff.staff.educationLevel.eq(request.getEducationLevel()));
+					QStaff.staff.educationLevel.in(educationLevels));
 		}
 		if (null != request.getMaximumSalary()) {
 			query = addClause(query,
-					QStaff.staff.desiredSalary.lt(request.getMaximumSalary()));
+					QStaff.staff.desiredSalary.loe(request.getMaximumSalary()));
 		}
-		if (null != request.getMinYearsExperience()
-				&& null != request.getMaxYearsExperience()) {
-			query = addClause(
-					query,
-					QStaff.staff.yearsExperience.gt(
-							request.getMinYearsExperience()).and(
-							QStaff.staff.yearsExperience.lt(request
-									.getMaxYearsExperience())));
+		if (null != request.getMinYearsExperience()) {
+			query = addClause(query, QStaff.staff.yearsExperience.goe(request
+					.getMinYearsExperience()));
+		}
+		if (null != request.getMaxYearsExperience()) {
+			query = addClause(query, QStaff.staff.yearsExperience.loe(request
+					.getMaxYearsExperience()));
 		}
 
 		return Lists.newArrayList(staffRepository.findAll(query));
@@ -80,7 +87,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public StaffingContract createStaffingContract(
+	public StaffingContract createStaffingContract(final Long clientId,
 			final StaffingContractRequest request) {
 		final StaffingContract contract = new StaffingContract();
 		contract.setLocation(request.getCity());
@@ -89,18 +96,17 @@ public class ClientServiceImpl implements ClientService {
 		final Iterable<Staff> desiredStaff = staffRepository.findAll(request
 				.getStaffIds());
 		contract.setDesiredStaff(Lists.newArrayList(desiredStaff));
+
+		final Client client = clientRepository.findOne(clientId);
+		contract.setClient(client);
 		return staffingContractRepository.save(contract);
 	}
 
 	@Override
-	public List<StaffingContract> getAllStaffingContracts(final Long clientId) {
-		final Client client = clientRepository.findOne(clientId);
-		return client.getContracts();
-	}
-
-	@Override
 	public StaffingContract getStaffingContract(final Long contractId) {
-		return staffingContractRepository.findOne(contractId);
+		final StaffingContract contract = staffingContractRepository
+				.findOne(contractId);
+		return contract;
 	}
 
 }

@@ -1,13 +1,18 @@
 package edu.devry.cis470.tps.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 
 @Entity
 public class Staff extends User {
 
 	private String city;
 	private Integer desiredSalary;
-	private String educationLevel;
+	@Enumerated(EnumType.STRING)
+	private EducationLevel educationLevel;
+	@Lob
 	private byte[] picture;
 	private Integer yearsExperience;
 
@@ -19,7 +24,7 @@ public class Staff extends User {
 		return desiredSalary;
 	}
 
-	public String getEducationLevel() {
+	public EducationLevel getEducationLevel() {
 		return educationLevel;
 	}
 
@@ -39,7 +44,7 @@ public class Staff extends User {
 		this.desiredSalary = desiredSalary;
 	}
 
-	public void setEducationLevel(final String educationLevel) {
+	public void setEducationLevel(final EducationLevel educationLevel) {
 		this.educationLevel = educationLevel;
 	}
 

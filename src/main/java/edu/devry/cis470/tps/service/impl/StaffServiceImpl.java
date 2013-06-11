@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.devry.cis470.tps.domain.EducationLevel;
 import edu.devry.cis470.tps.domain.Staff;
 import edu.devry.cis470.tps.repository.StaffRepository;
 import edu.devry.cis470.tps.service.StaffService;
@@ -30,11 +31,15 @@ public class StaffServiceImpl implements StaffService {
 
 	@Override
 	@Transactional
-	public Staff updateStaff(final UpdateStaffRequest request) {
-		final Staff staff = staffRepository.findOne(request.getStaffId());
+	public Staff updateStaff(final Long staffId,
+			final UpdateStaffRequest request) {
+		final EducationLevel educationLevel = EducationLevel.valueOf(request
+				.getEducationLevel());
+
+		final Staff staff = staffRepository.findOne(staffId);
 		staff.setCity(request.getCity());
 		staff.setDesiredSalary(request.getDesiredSalary());
-		staff.setEducationLevel(request.getEducationLevel());
+		staff.setEducationLevel(educationLevel);
 		staff.setYearsExperience(request.getYearsExperience());
 		staff.setPicture(request.getPictureData());
 		return staffRepository.save(staff);

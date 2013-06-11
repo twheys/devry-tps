@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 
@@ -19,7 +20,7 @@ public class ClientServiceTest extends AbstractTest {
 
 	@Test
 	public void testCreateNewClient() throws NonUniqueUsernameException {
-		final String username = "test01";
+		final String username = "client01";
 		final String password = "123456";
 		final Client client = clientService.createNewClient(username, password);
 
@@ -30,17 +31,20 @@ public class ClientServiceTest extends AbstractTest {
 
 	@Test
 	public void testCreateStaffingContract() throws NonUniqueUsernameException {
-		final Staff staff1 = staffService.createNewStaff("test01", "123");
-		final Staff staff2 = staffService.createNewStaff("test02", "123");
-		final Staff staff3 = staffService.createNewStaff("test03", "123");
+		final Staff staff1 = staffService.createNewStaff("staff02", "123");
+		final Staff staff2 = staffService.createNewStaff("staff03", "123");
+		final Staff staff3 = staffService.createNewStaff("staff04", "123");
+
 		final StaffingContractRequest request = new StaffingContractRequest();
 		request.setCity("Washington, DC");
 		request.setDesiredSalary(45000L);
 		request.setStaffIds(Lists.newArrayList(staff1.getId(), staff2.getId(),
 				staff3.getId()));
 
-		final StaffingContract contract = clientService
-				.createStaffingContract(request);
+		final Client client = clientService.createNewClient("client02", "123");
+
+		final StaffingContract contract = clientService.createStaffingContract(
+				client.getId(), request);
 
 		assertNotNull(contract.getId());
 		assertEquals("Washington, DC", contract.getLocation());
@@ -50,19 +54,20 @@ public class ClientServiceTest extends AbstractTest {
 		assertTrue(contract.getDesiredStaff().contains(staff3));
 	}
 
+	@Transactional
 	@Test
 	public void testGetStaffingContract() throws NonUniqueUsernameException {
-		final Staff staff1 = staffService.createNewStaff("test01", "123");
-		final Staff staff2 = staffService.createNewStaff("test02", "123");
-		final Staff staff3 = staffService.createNewStaff("test03", "123");
+		final Staff staff1 = staffService.createNewStaff("staff05", "123");
+
 		final StaffingContractRequest request = new StaffingContractRequest();
 		request.setCity("Washington, DC");
 		request.setDesiredSalary(45000L);
-		request.setStaffIds(Lists.newArrayList(staff1.getId(), staff2.getId(),
-				staff3.getId()));
+		request.setStaffIds(Lists.newArrayList(staff1.getId()));
 
-		final StaffingContract contract = clientService
-				.createStaffingContract(request);
+		final Client client = clientService.createNewClient("client03", "123");
+
+		final StaffingContract contract = clientService.createStaffingContract(
+				client.getId(), request);
 
 		final StaffingContract result = clientService
 				.getStaffingContract(contract.getId());
@@ -71,14 +76,12 @@ public class ClientServiceTest extends AbstractTest {
 		assertEquals("Washington, DC", result.getLocation());
 		assertEquals(new Long(45000L), result.getDesiredSalary());
 		assertTrue(result.getDesiredStaff().contains(staff1));
-		assertTrue(result.getDesiredStaff().contains(staff2));
-		assertTrue(result.getDesiredStaff().contains(staff3));
 	}
 
 	@Test(expected = NonUniqueUsernameException.class)
 	public void testUniqueUsernameConstraint()
 			throws NonUniqueUsernameException {
-		staffService.createNewStaff("test01", "123");
-		staffService.createNewStaff("test01", "123");
+		clientService.createNewClient("staff08", "123");
+		clientService.createNewClient("staff08", "123");
 	}
 }

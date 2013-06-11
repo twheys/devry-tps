@@ -16,9 +16,8 @@ public interface ClientService {
 	Client createNewClient(String username, String password)
 			throws NonUniqueUsernameException;
 
-	StaffingContract createStaffingContract(StaffingContractRequest request);
-
-	List<StaffingContract> getAllStaffingContracts(Long clientId);
+	StaffingContract createStaffingContract(final Long clientId,
+			StaffingContractRequest request);
 
 	StaffingContract getStaffingContract(Long contractId);
 }
