@@ -8,6 +8,8 @@ import javax.persistence.Lob;
 @Entity
 public class Staff extends User {
 
+	private String firstName;
+	private String lastName;
 	private String city;
 	private Integer desiredSalary;
 	@Enumerated(EnumType.STRING)
@@ -15,6 +17,10 @@ public class Staff extends User {
 	@Lob
 	private byte[] picture;
 	private Integer yearsExperience;
+
+	public Staff() {
+		educationLevel = EducationLevel.UNKNOWN;
+	}
 
 	public String getCity() {
 		return city;
@@ -26,6 +32,14 @@ public class Staff extends User {
 
 	public EducationLevel getEducationLevel() {
 		return educationLevel;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
 	}
 
 	public byte[] getPicture() {
@@ -46,6 +60,14 @@ public class Staff extends User {
 
 	public void setEducationLevel(final EducationLevel educationLevel) {
 		this.educationLevel = educationLevel;
+	}
+
+	public void setFirstName(final String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(final String lastName) {
+		this.lastName = lastName;
 	}
 
 	public void setPicture(final byte[] picture) {

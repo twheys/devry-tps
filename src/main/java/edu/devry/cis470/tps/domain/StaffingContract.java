@@ -7,15 +7,22 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import edu.devry.cis470.tps.controller.dto.ContractStatus;
+
 @Entity
 public class StaffingContract extends IdEntity {
 
 	private Long desiredSalary;
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Staff> desiredStaff;
 	private String location;
+	private ContractStatus status;
 	@ManyToOne
 	private Client client;
+
+	public StaffingContract() {
+		status = ContractStatus.NEW;
+	}
 
 	public Client getClient() {
 		return client;
@@ -33,6 +40,10 @@ public class StaffingContract extends IdEntity {
 		return location;
 	}
 
+	public ContractStatus getStatus() {
+		return status;
+	}
+
 	public void setClient(final Client client) {
 		this.client = client;
 	}
@@ -47,6 +58,10 @@ public class StaffingContract extends IdEntity {
 
 	public void setLocation(final String location) {
 		this.location = location;
+	}
+
+	public void setStatus(final ContractStatus status) {
+		this.status = status;
 	}
 
 	@Override

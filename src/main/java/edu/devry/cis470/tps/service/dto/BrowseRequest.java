@@ -5,7 +5,7 @@ public class BrowseRequest {
 	private Integer minYearsExperience;
 	private Integer maxYearsExperience;
 	private String educationLevel;
-	private Integer maximumSalary;
+	private Long maximumSalary;
 	private String city;
 
 	public String getCity() {
@@ -16,7 +16,7 @@ public class BrowseRequest {
 		return educationLevel;
 	}
 
-	public Integer getMaximumSalary() {
+	public Long getMaximumSalary() {
 		return maximumSalary;
 	}
 
@@ -36,7 +36,7 @@ public class BrowseRequest {
 		this.educationLevel = educationLevel;
 	}
 
-	public void setMaximumSalary(final Integer maximumSalary) {
+	public void setMaximumSalary(final Long maximumSalary) {
 		this.maximumSalary = maximumSalary;
 	}
 

@@ -26,16 +26,16 @@ public class TPSAuthenticationSuccessHandler implements
 
 		for (final GrantedAuthority role : principle.getAuthorities()) {
 			if ("ROLE_CLIENT".equals(role.getAuthority())) {
-				response.sendRedirect("/manage");
+				response.sendRedirect("manage");
 				return;
 			}
 			if ("ROLE_STAFF".equals(role.getAuthority())) {
-				response.sendRedirect("/profile");
+				response.sendRedirect("profile");
 				return;
 			}
 		}
 
-		response.sendRedirect("/login?errors=1");
+		response.sendRedirect("/login");
 	}
 
 }

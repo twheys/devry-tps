@@ -1,8 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:spring="http://www.springframework.org/tags">
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Staff Page</title>
+<title>Search Results</title>
 <style type="text/css">
 <!--
 body {
@@ -107,10 +110,9 @@ a:hover,a:active,a:focus {
 	font-weight: bold;
 }
 
-.Header {
-	font-size: large;
-	font-weight: bold;
-	color: #693;
+.directions {
+	font-size: x-small;
+	color: #000;
 }
 -->
 </style>
@@ -120,63 +122,125 @@ a:hover,a:active,a:focus {
 
 	<div class="container">
 		<div class="header">
-			<a href="home.html"><img src="../static/logo_big.png"
+			<a href="home.html" th:href="@{/manage}"> <img
+				th:src="@{/r/logo_big.png}" src="../static/logo_big.png"
 				alt="Insert Logo Here" name="Insert_logo" width="960" height="200"
-				id="Insert_logo" style="background: #C6D580; display: block;" /></a>
+				id="Insert_logo" style="background: #C6D580; display: block;" />
+			</a>
 			<!-- end .header -->
 		</div>
 		<div class="content">
-			<!-- end .content -->
 			<table width="958" border="0">
 				<tr>
-					<td width="28"></td>
-					<td width="425"><p align="center" class="Header">PICTURE</p> <br />
-						<br /> <br />
-						<p align="center">
-							<span class="container"><img src="" alt=""
-								name="UploadedPicture" width="32" height="32"
-								id="UploadedPicture" /> <!--This is where teh image should display after being uploaded for the staff picture-->
+					<td width="423" bgcolor="#FFFFFF" class="TableHeader2"><div
+							align="center">
+							New Search <br />
+						</div>
+						<div align="center">
+							<span class="directions"> <br />enter search criteria
 							</span>
-							<form action="uploadPicture_form.asp" method="post">
-								<span class="container"> <input name="pic" type="file"
-									size="10" accept="image/*" /> <br /> <input type="submit" />
-								</span>
-							</form>
-						</p></td>
-					<td width="491">
-						<form action="staffProfile_form.asp">
-
-							<p align="center" class="Header">PROFILE INFORMATION</p>
-							<p>
-								First name: <input name="txtFirstName" type="text" size="15"
-									maxlength="15" /><br /> Last name: <input
-									name="txtLastNameame" type="text" size="15" maxlength="15" /><br />
-								Years of Experience: <input name="txtExperience" type="text"
-									size="3" maxlength="2" /><br /> Desired Salary:<input
-									name="txtSalary" type="text" size="8" maxlength="6" /><br />
-								Education: <select>
-									<option value="High School">High School</option>
-									<option value="Associates">Associates</option>
-									<option value="Bachelors">Bachelors</option>
-									<option value="Masters">Masters</option>
-									<option value="Doctorate">Doctorate</option>
-								</select> <br /> City: <select>
+						</div>
+					</td>
+					<td width="324" class="TableHeader2">
+						<div align="center">Search Results</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<form action="#" th:action="@{/search}" method="get" th:object="${search}">
+							<p align="left">
+								Years of Experience:
+								<input th:field="*{minYearsExp}" type="text" size="3" maxlength="2" />
+								to
+								<input th:field="*{maxYearsExp}" type="text" size="3" maxlength="2" />
+								<br />
+								Maximum Salary:
+								<input th:field="*{salary}" type="text" size="8" maxlength="6" />
+								<br />
+								Minimum Education:
+								<select th:field="*{educationLevel}">
+									<option value="HIGH_SCHOOL">High School</option>
+									<option value="ASSOCIATES">Associates</option>
+									<option value="BACHELORS">Bachelors</option>
+									<option value="MASTERS">Masters</option>
+									<option value="DOCTORATES">Doctorate</option>
+								</select>
+								<br />
+								City:
+								<select th:field="*{city}">
 									<option value="Alpena">Alpena</option>
 									<option value="Gaylord">Gaylord</option>
 									<option value="Harbor Springs">Harbor Springs</option>
 									<option value="Petoskey">Petoskey</option>
 									<option value="Wolverine">Wolverine</option>
-								</select> <br /> <br /> <input type="button" value="Update" /> <input
-									type="reset" value="Cancel" />
+								</select>
+								<br />
+								<input type="submit" value="Search" />
 							</p>
+						</form>
+						<a href="manage.html" th:href="@{/manage}">Return</a>
+					</td>
+					<td>
+						<p th:if="${#lists.isEmpty(results)}">There were no search results.</p>
+						<form action="#" th:action="@{/contract/create}" method="post" th:object="${contract}" th:if="${not #lists.isEmpty(results)}">
+						<table width="320" border="0" th:if="${not #lists.isEmpty(results)}">
+						<tr th:each="staff : ${results}"> 
+						<td>
+							<input type="hidden" th:field="*{desiredSalary}"/>
+							<input type="hidden" th:field="*{location}"/>
+							<table >
+								<tr>
+								<td width="105" rowspan="5">
+									<img th:src="@{'/pic/' + ${staff.userName}}" alt="" width="100" />
+								</td>
+								<td width="205">
+									<span th:text="${staff.firstName + ' ' + staff.lastName}">Test User</span>
+									<input type="checkbox" th:field="*{location}" th:value="${staff.id}"/>
+								</td>
+								</tr>
+								<tr>
+								<td>
+									Years of Experience:
+									<span th:text="${staff.yearsExperience}">5</span>
+								</td>
+								</tr>
+								<tr>
+								<td>
+									Education:
+									<span th:text="${staff.educationLevel.display}">Bachelors</span>
+								</td>
+								</tr>
+								<tr>
+								<td>
+									Desired Salary:
+									<span th:text="${staff.desiredSalary}">45000</span>
+								</td>
+								</tr>
+								<tr>
+								<td>
+									Location:
+									<span th:text="${staff.city}">Gaylord</span>
+								</td>
+								</tr>
+							</table>
+						</td>
+						</tr>
+						</table>
+						<input type="submit" value="Submit Contract Request"/>
 						</form>
 					</td>
 				</tr>
 			</table>
+			<h1 align="right" class="directions">Display the above</h1>
+			<p align="right" class="directions">For each matching staff</p>
+			<!-- end .content -->
 		</div>
 		<div class="footer">
 			<p>
-				<a href="home.html">Contact Us</a>
+				<a href="contact.html" th:href="@{/contact}">Contact Us</a>
+			</p>
+			<p>
+				<a href="home.html" th:href="@{/logout}">Logout</a>
 			</p>
 			<!-- end .footer -->
 		</div>

@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org"> 
-
+<?xml version="1.0" encoding="UTF-8" ?>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:spring="http://www.springframework.org/tags">
+	
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Login and Registration Page</title>
+<title>Staff Page</title>
 <style type="text/css">
 <!--
 body {
@@ -27,6 +29,7 @@ h1,h2,h3,h4,h5,h6,p {
 	/* removing the top margin gets around an issue where margins can escape from their containing div. The remaining bottom margin will hold it away from any elements that follow. */
 	padding-right: 15px;
 	padding-left: 15px;
+	/* adding the padding to the sides of the elements within the divs, instead of the divs themselves, gets rid of any box model math. A nested div with side padding can also be used as an alternate method. */
 }
 
 a img {
@@ -69,7 +72,7 @@ a:hover,a:active,a:focus {
 
 */
 .content {
-	padding: 2px 0;
+	padding: 50px 0;
 }
 
 /* ~~ The footer ~~ */
@@ -99,13 +102,18 @@ a:hover,a:active,a:focus {
 	line-height: 0px;
 }
 
-.container .content table tr td form div p strong {
-	font-size: x-large;
+.TableHeader2 {
+	font-size: large;
 	color: #693;
 }
 
-.TableCellHeader {
-	font-size: x-large;
+.bold {
+	font-weight: bold;
+}
+
+.Header {
+	font-size: large;
+	font-weight: bold;
 	color: #693;
 }
 -->
@@ -116,65 +124,83 @@ a:hover,a:active,a:focus {
 
 	<div class="container">
 		<div class="header">
-			<a href="home.html"> 
-				<img src="../static/logo_big.png" alt="Insert Logo Here"
+			<a href="home.html" th:href="@{/}"> 
+				<img th:src="@{/r/logo_big.png}" src="../static/logo_big.png" alt="Insert Logo Here"
 				name="Insert_logo" width="960" height="200" id="Insert_logo"
 				style="background: #C6D580; display: block;" />
 			</a>
 			<!-- end .header -->
 		</div>
 		<div class="content">
-			<table width="926" border="0">
+			<!-- end .content -->
+			<table width="958" border="0">
 				<tr>
-					<td width="54"></td>
-					<td width="245">
-						<form action="login_form.asp">
-							<div align="center">
-								<p class="TableCellHeader">
-									<strong>Log In</strong>
-								</p>
-								<p class="content">
-									User Name <input name="txtUserName" type="text" maxlength="12" />
-									<br /> Password <input type="password" name="txtPassword" />
-									<br /> <br /> <input name="btnLoginSubmit" type="submit"
-										value="Submit" /> <br /> <br /> <br /> <br /> <br />
-								</p>
-							</div>
-						</form>
-					</td>
-					<td width="243"><img src="../static/landing.jpg" width="449"
-						height="332" /></td>
-					<td width="356">
-						<p align="center" class="TableCellHeader">
-							<strong>Register</strong>
-							<form action="registration_form.asp" method="post">
-								<div align="center">
-									<p>
-										User Name <input name="txtRegUserName" type="text"
-											maxlength="12" /><br /> Password <input type="password"
-											name="txtRegPassword" /> <br /> Confirm Password <input
-											name="txtRegPasswordConfirm" type="password" maxlength="25" />
-										<br /> Email Address <input type="text" name="txtEmail" /> <br />
-										Account <select>
-											<option value="Staff">Staff</option>
-											<option value="Client" selected="selected">Client</option>
-										</select> <br /> <br /> <input name="btnRegSubmit" type="submit"
-											value="Submit" />
-										<!--Validates all input fields complete and password matches confirm password, if so, writes data to database and logs the user in-->
-										<input name="btnRegCancel" type="reset" value="Cancel" />
-									</p>
-								</div>
+					<td width="28"></td>
+					<td width="425"><p align="center" class="Header">PICTURE</p> <br />
+						<br /> <br />
+						<p align="center">
+							<span class="container">
+							<img th:src="@{'/pic/' + ${userName}}" alt="" width="256" height="256" id="UploadedPicture" /> 
+							</span>
+							<form method="post" th:action="@{/profile/picture}" action="#"
+								  th:object="${picture}" enctype="multipart/form-data" >
+								<span class="container">
+									<input type="file" accept="image/*" th:field="*{fileData}" />
+									<br />
+									<input type="submit" />
+								</span>
 							</form>
 						</p>
 					</td>
+					<td width="491">
+						<form method="post" th:action="@{/profile/update}" action="#" th:object="${profile}">
+							<p align="center" class="Header">PROFILE INFORMATION</p>
+							<p>
+								First name:
+								<input type="text" size="15" maxlength="15" th:field="*{firstName}" />
+								<br />
+								Last name:
+								<input type="text" size="15" maxlength="15" th:field="*{lastName}" />
+								<br />
+								Years of Experience:
+								<input type="text" size="3" maxlength="2" th:field="*{yearsExperience}" />
+								<br />
+								Desired Salary:
+								<input type="text" size="8" maxlength="6" th:field="*{desiredSalary}" />
+								<br />
+								Education:
+								<select th:field="*{educationLevel}">
+									<option value="HIGH_SCHOOL">High School</option>
+									<option value="ASSOCIATES">Associates</option>
+									<option value="BACHELORS">Bachelors</option>
+									<option value="MASTERS">Masters</option>
+									<option value="DOCTORATES">Doctorate</option>
+								</select>
+								<br />
+								City:
+								<select th:field="*{city}">
+									<option value="Alpena">Alpena</option>
+									<option value="Gaylord">Gaylord</option>
+									<option value="Harbor Springs">Harbor Springs</option>
+									<option value="Petoskey">Petoskey</option>
+									<option value="Wolverine">Wolverine</option>
+								</select>
+								<br /> 
+								<br />
+								<input type="submit" value="Update" />
+								<input type="reset" value="Cancel" />
+							</p>
+						</form>
+					</td>
 				</tr>
 			</table>
-			<h1></h1>
-			<!-- end .content -->
 		</div>
 		<div class="footer">
 			<p>
-				<a href="contact.html">Contact Us</a>
+				<a href="contact.html" th:href="@{/contact}">Contact Us</a>
+			</p>
+			<p>
+				<a href="home.html" th:href="@{/logout}">Logout</a>
 			</p>
 			<!-- end .footer -->
 		</div>

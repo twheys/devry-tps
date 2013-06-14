@@ -1,11 +1,18 @@
 package edu.devry.cis470.tps.service.dto;
 
-public class UpdateStaffRequest {
 
+public class UpdateProfileRequest {
+
+	private String firstName;
+	private String lastName;
 	private Integer yearsExperience;
 	private String educationLevel;
 	private Integer desiredSalary;
 	private String city;
+
+	public UpdateProfileRequest() {
+		super();
+	}
 
 	public String getCity() {
 		return city;
@@ -17,6 +24,14 @@ public class UpdateStaffRequest {
 
 	public String getEducationLevel() {
 		return educationLevel;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
 	}
 
 	public Integer getYearsExperience() {
@@ -33,6 +48,14 @@ public class UpdateStaffRequest {
 
 	public void setEducationLevel(final String educationLevel) {
 		this.educationLevel = educationLevel;
+	}
+
+	public void setFirstName(final String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(final String lastName) {
+		this.lastName = lastName;
 	}
 
 	public void setYearsExperience(final Integer yearsExperience) {

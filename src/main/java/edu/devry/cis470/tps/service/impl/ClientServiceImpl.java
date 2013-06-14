@@ -54,20 +54,29 @@ public class ClientServiceImpl implements ClientService {
 		if (null != request.getEducationLevel()) {
 			final List<EducationLevel> educationLevels = educationLevelComparator
 					.getEducationLevelsForMinimum(request.getEducationLevel());
-			query = addClause(query,
-					QStaff.staff.educationLevel.in(educationLevels));
+			query = addClause(
+					query,
+					QStaff.staff.educationLevel.in(educationLevels).or(
+							QStaff.staff.educationLevel.isNull()));
 		}
 		if (null != request.getMaximumSalary()) {
 			query = addClause(query,
-					QStaff.staff.desiredSalary.loe(request.getMaximumSalary()));
+					QStaff.staff.desiredSalary.loe(request.getMaximumSalary())
+							.or(QStaff.staff.desiredSalary.isNull()));
 		}
 		if (null != request.getMinYearsExperience()) {
-			query = addClause(query, QStaff.staff.yearsExperience.goe(request
-					.getMinYearsExperience()));
+			query = addClause(
+					query,
+					QStaff.staff.yearsExperience.goe(
+							request.getMinYearsExperience()).or(
+							QStaff.staff.yearsExperience.isNull()));
 		}
 		if (null != request.getMaxYearsExperience()) {
-			query = addClause(query, QStaff.staff.yearsExperience.loe(request
-					.getMaxYearsExperience()));
+			query = addClause(
+					query,
+					QStaff.staff.yearsExperience.loe(
+							request.getMaxYearsExperience()).or(
+							QStaff.staff.yearsExperience.isNull()));
 		}
 
 		return Lists.newArrayList(staffRepository.findAll(query));
@@ -77,19 +86,23 @@ public class ClientServiceImpl implements ClientService {
 	@Transactional
 	public Client createNewClient(final String username, final String password,
 			final String email) throws NonUniqueUsernameException {
-		if (null != clientRepository.findByUsername(username))
+		if (null != clientRepository.findByUserName(username))
 			throw new NonUniqueUsernameException();
 
 		final Client client = new Client();
-		client.setUsername(username);
+		client.setUserName(username);
 		client.setPassword(password);
 		client.setEmail(email);
 		return clientRepository.save(client);
 	}
 
 	@Override
-	public StaffingContract createStaffingContract(final Long clientId,
-			final StaffingContractRequest request) {
+	public StaffingContract createStaffingContract(final String username,
+			final StaffingContractRequest request) throws NotFoundException {
+		final Client client = clientRepository.findByUserName(username);
+		if (null == client)
+			throw new NotFoundException(username);
+
 		final StaffingContract contract = new StaffingContract();
 		contract.setLocation(request.getCity());
 		contract.setDesiredSalary(request.getDesiredSalary());
@@ -97,10 +110,19 @@ public class ClientServiceImpl implements ClientService {
 		final Iterable<Staff> desiredStaff = staffRepository.findAll(request
 				.getStaffIds());
 		contract.setDesiredStaff(Lists.newArrayList(desiredStaff));
-
-		final Client client = clientRepository.findOne(clientId);
 		contract.setClient(client);
 		return staffingContractRepository.save(contract);
+	}
+
+	@Transactional
+	@Override
+	public List<StaffingContract> getAllStaffingContract(
+			final String clientUserName) throws NotFoundException {
+		final Client client = clientRepository.findByUserName(clientUserName);
+		if (null == client)
+			throw new NotFoundException(clientUserName);
+
+		return staffingContractRepository.findByClient(client);
 	}
 
 	@Override

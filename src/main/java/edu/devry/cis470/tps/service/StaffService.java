@@ -4,16 +4,19 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import edu.devry.cis470.tps.domain.Staff;
-import edu.devry.cis470.tps.service.dto.UpdateStaffRequest;
+import edu.devry.cis470.tps.service.dto.UpdateProfileRequest;
 import edu.devry.cis470.tps.service.impl.NonUniqueUsernameException;
+import edu.devry.cis470.tps.service.impl.NotFoundException;
 
 public interface StaffService {
 
 	Staff createNewStaff(String username, String password, String email)
 			throws NonUniqueUsernameException;
 
-	Staff updateStaff(Long staffId, UpdateStaffRequest request);
+	Staff getStaff(String userName) throws NotFoundException;
 
-	Staff updateStaffPicture(Long staffId, InputStream stream)
+	Staff updateStaff(String userName, UpdateProfileRequest request);
+
+	Staff updateStaffPicture(String userName, InputStream stream)
 			throws IOException;
 }

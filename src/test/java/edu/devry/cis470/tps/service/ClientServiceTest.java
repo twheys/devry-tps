@@ -14,6 +14,7 @@ import edu.devry.cis470.tps.domain.Staff;
 import edu.devry.cis470.tps.domain.StaffingContract;
 import edu.devry.cis470.tps.service.dto.StaffingContractRequest;
 import edu.devry.cis470.tps.service.impl.NonUniqueUsernameException;
+import edu.devry.cis470.tps.service.impl.NotFoundException;
 import edu.devry.cis470.tps.test.AbstractTest;
 
 public class ClientServiceTest extends AbstractTest {
@@ -26,12 +27,13 @@ public class ClientServiceTest extends AbstractTest {
 				"client01@email.com");
 
 		assertNotNull(client.getId());
-		assertEquals(username, client.getUsername());
+		assertEquals(username, client.getUserName());
 		assertEquals(password, client.getPassword());
 	}
 
 	@Test
-	public void testCreateStaffingContract() throws NonUniqueUsernameException {
+	public void testCreateStaffingContract() throws NonUniqueUsernameException,
+			NotFoundException {
 		final Staff staff1 = staffService.createNewStaff("staff02", "123",
 				"staff02@email.com");
 		final Staff staff2 = staffService.createNewStaff("staff03", "123",
@@ -49,7 +51,7 @@ public class ClientServiceTest extends AbstractTest {
 				"staff02@email.com");
 
 		final StaffingContract contract = clientService.createStaffingContract(
-				client.getId(), request);
+				client.getUserName(), request);
 
 		assertNotNull(contract.getId());
 		assertEquals("Washington, DC", contract.getLocation());
@@ -61,7 +63,8 @@ public class ClientServiceTest extends AbstractTest {
 
 	@Transactional
 	@Test
-	public void testGetStaffingContract() throws NonUniqueUsernameException {
+	public void testGetStaffingContract() throws NonUniqueUsernameException,
+			NotFoundException {
 		final Staff staff1 = staffService.createNewStaff("staff05", "123",
 				"staff05@email.com");
 
@@ -74,7 +77,7 @@ public class ClientServiceTest extends AbstractTest {
 				"client03@email.com");
 
 		final StaffingContract contract = clientService.createStaffingContract(
-				client.getId(), request);
+				client.getUserName(), request);
 
 		final StaffingContract result = clientService
 				.getStaffingContract(contract.getId());

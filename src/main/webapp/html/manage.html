@@ -1,8 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<?xml version="1.0" encoding="UTF-8" ?>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:spring="http://www.springframework.org/tags">
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Contact Page</title>
+<title>Client Page</title>
 <style type="text/css">
 <!--
 body {
@@ -106,6 +110,12 @@ a:hover,a:active,a:focus {
 .bold {
 	font-weight: bold;
 }
+
+.directions {
+	font-size: small;
+	text-decoration: underline;
+	color: #000;
+}
 -->
 </style>
 </head>
@@ -114,42 +124,83 @@ a:hover,a:active,a:focus {
 
 	<div class="container">
 		<div class="header">
-			<a href="home.html"><img src="../static/logo_big.png"
-				alt="Insert Logo Here" name="Insert_logo" width="960" height="200"
-				id="Insert_logo" style="background: #C6D580; display: block;" /></a>
+			<a href="home.html" th:href="@{/}"> 
+				<img th:src="@{/r/logo_big.png}" src="../static/logo_big.png" alt="Insert Logo Here"
+				name="Insert_logo" width="960" height="200" id="Insert_logo"
+				style="background: #C6D580; display: block;" />
+			</a>
 			<!-- end .header -->
 		</div>
 		<div class="content">
-			<table width="903" border="0">
+			<table width="961" border="0">
 				<tr>
-					<td width="350" bgcolor="#FFFFFF" class="TableHeader2"><div
-							align="center">About US</div></td>
-					<td width="233"></td>
-					<td width="306" class="TableHeader2"><div align="center">Contact
-							Information</div></td>
+					<td bgcolor="#FFFFFF" class="TableHeader2">
+						<div align="center">Staff Search</div>
+					</td>
+					<td>
+						<div align="center" class="TableHeader2">Current Requests</div>
+					</td>
 				</tr>
 				<tr>
-					<td><p>Taylor Professional Services has been helping our
-							clients find the best possible candidates to fill positions of
-							need for over 20 years.</p>
-						<p>Your business, is our business, the people business.</p></td>
-					<td></td>
-					<td><p>
-							<span class="bold">Phone:</span> (555) 555-5555
-						</p>
-						<p>
-							<span class="bold">Fax:</span>
-							(555) 555-5556
-						</p>
-						<p>
-							<span class="bold">Address:</span> 123 TPS Lane
-						</p>
-						<p>
-							Gaylord,
-							Mi 49735</p>
-						<p>
-							<span class="bold">Email:</span> info@tps.com
-						</p></td>
+					<td bgcolor="#FFFFFF" class="TableHeader2">
+						<div align="center">
+						<span class="directions">enter search criteria</span>
+						</div>
+					</td>
+					<td class="directions">
+						<div align="center">Existing contract proposals and status</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<form action="#" th:action="@{/search}" method="get" th:object="${search}">
+							<p align="left">
+								Years of Experience:
+								<input th:field="*{minYearsExp}" type="text" size="3" maxlength="2" />
+								to
+								<input th:field="*{maxYearsExp}" type="text" size="3" maxlength="2" />
+								<br />
+								Maximum Salary:
+								<input th:field="*{salary}" type="text" size="8" maxlength="6" />
+								<br />
+								Minimum Education:
+								<select th:field="*{educationLevel}">
+									<option value="HIGH_SCHOOL">High School</option>
+									<option value="ASSOCIATES">Associates</option>
+									<option value="BACHELORS">Bachelors</option>
+									<option value="MASTERS">Masters</option>
+									<option value="DOCTORATES">Doctorate</option>
+								</select>
+								<br />
+								City:
+								<select th:field="*{city}">
+									<option value="Alpena">Alpena</option>
+									<option value="Gaylord">Gaylord</option>
+									<option value="Harbor Springs">Harbor Springs</option>
+									<option value="Petoskey">Petoskey</option>
+									<option value="Wolverine">Wolverine</option>
+								</select>
+								<br />
+								<input type="submit" value="Search" />
+							</p>
+						</form>
+					</td>
+					<td>
+						<p th:if="${#lists.isEmpty(contracts)}">You have no pending contracts.</p>
+						<div th:each="contract : ${contracts}">
+							<h4 th:text="${'Contract: ' + contract.id}">Contract: 1</h4>
+							<div th:text="${'Request Status: ' + contract.status.display}">&lt;Current request status&gt;</div>
+							<div th:text="${'Maximum Salary: ' + contract.desiredSalary}">&lt;Display Salary in request&gt;</div>
+							<div th:text="${'Work Location: ' + contract.location}">&lt;Display City in request&gt;</div>
+							<div th:each="staff : ${contract.desiredStaff}">
+								<strong>Candidates</strong>
+								<div th:text="${'Name: ' + staff.firstName + ' ' + staff.lastName}">&lt;Display staff name&gt;</div>
+								<div th:text="${'Email: ' + staff.email}">&lt;Display staff email&gt;</div>
+								<div th:text="${'Years Experience: ' + staff.yearsExperience}">&lt;Display staff experience&gt;</div>
+								<div th:text="${'Education Level: ' + staff.educationLevel.display}">&lt;Display staff education level&gt;</div>
+							</div>
+						</div>
+					</td>
 				</tr>
 			</table>
 			<h1></h1>
@@ -157,7 +208,10 @@ a:hover,a:active,a:focus {
 		</div>
 		<div class="footer">
 			<p>
-				<a href="contact.html">Contact Us</a>
+				<a href="contact.html" th:href="@{/contact}">Contact Us</a>
+			</p>
+			<p>
+				<a href="home.html" th:href="@{/logout}">Logout</a>
 			</p>
 			<!-- end .footer -->
 		</div>

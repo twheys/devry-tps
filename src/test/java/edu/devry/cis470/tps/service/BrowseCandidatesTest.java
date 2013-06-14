@@ -35,7 +35,7 @@ public class BrowseCandidatesTest extends AbstractTest {
 
 		final BrowseRequest request = new BrowseRequest();
 		request.setCity(SAN_FRANCISCO);
-		request.setMaximumSalary(50000);
+		request.setMaximumSalary(50000L);
 		request.setMinYearsExperience(5);
 		request.setMaxYearsExperience(10);
 		request.setEducationLevel(EducationLevel.BACHELORS.toString());
@@ -131,7 +131,7 @@ public class BrowseCandidatesTest extends AbstractTest {
 				EducationLevel.BACHELORS, 55000, 3);
 
 		final BrowseRequest request = new BrowseRequest();
-		request.setMaximumSalary(50000);
+		request.setMaximumSalary(50000L);
 		final List<Staff> result = clientService.browseCandidates(request);
 		assertEquals(2, result.size());
 		assertTrue(result.contains(staff1));

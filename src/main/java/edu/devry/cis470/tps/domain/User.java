@@ -7,7 +7,7 @@ import javax.persistence.MappedSuperclass;
 public class User extends IdEntity {
 
 	@Column(unique = true, nullable = false)
-	private String username;
+	private String userName;
 
 	@Column(unique = false, nullable = false)
 	private String password;
@@ -24,10 +24,10 @@ public class User extends IdEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		final User other = (User) obj;
-		if (username == null) {
-			if (other.username != null)
+		if (userName == null) {
+			if (other.userName != null)
 				return false;
-		} else if (!username.equals(other.username))
+		} else if (!userName.equals(other.userName))
 			return false;
 		return true;
 	}
@@ -40,15 +40,15 @@ public class User extends IdEntity {
 		return password;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (username == null ? 0 : username.hashCode());
+		result = prime * result + (userName == null ? 0 : userName.hashCode());
 		return result;
 	}
 
@@ -60,13 +60,13 @@ public class User extends IdEntity {
 		this.password = password;
 	}
 
-	public void setUsername(final String username) {
-		this.username = username;
+	public void setUserName(final String userName) {
+		this.userName = userName;
 	}
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=<PROTECTED>, email="
+		return "User [username=" + userName + ", password=<PROTECTED>, email="
 				+ email + "]";
 	}
 

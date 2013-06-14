@@ -9,6 +9,7 @@ import edu.devry.cis470.tps.domain.Staff;
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, Long>,
 		QueryDslPredicateExecutor<Staff> {
-	Staff findByUsername(String username);
+
+	Staff findByUserName(String username);
 
 }

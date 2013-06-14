@@ -47,4 +47,10 @@ public class RegisterForm {
 	public void setUserType(final UserType userType) {
 		this.userType = userType;
 	}
+
+	@Override
+	public String toString() {
+		return "RegisterForm [userName=" + userName + ", emailAddress="
+				+ emailAddress + ", userType=" + userType + "]";
+	}
 }

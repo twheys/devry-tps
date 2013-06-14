@@ -4,9 +4,9 @@ import java.util.List;
 
 public class StaffingContractRequest {
 
-	private List<Long> staffIds;
 	private String city;
 	private Long desiredSalary;
+	private List<Long> staffIds;
 
 	public String getCity() {
 		return city;
@@ -31,4 +31,5 @@ public class StaffingContractRequest {
 	public void setStaffIds(final List<Long> staffIds) {
 		this.staffIds = staffIds;
 	}
+
 }

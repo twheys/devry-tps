@@ -7,19 +7,15 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.ejb.HibernatePersistence;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * An application context Java configuration class. The usage of Java
@@ -29,16 +25,13 @@ import org.springframework.web.servlet.view.JstlView;
  * <li>@EnableWebMvc annotation requires Spring Framework 3.1</li>
  * </ul>
  * 
- * @author Petri Kainulainen
  */
 @Configuration
 @ComponentScan(basePackages = { "edu.devry.cis470.tps" })
-@ImportResource("classpath:applicationContext.xml")
+@EnableTransactionManagement(proxyTargetClass = true)
+@EnableJpaRepositories("edu.devry.cis470.tps.repository")
 @PropertySource("classpath:application.properties")
 public class ApplicationContext {
-
-	private static final String VIEW_RESOLVER_PREFIX = "/WEB-INF/jsp/";
-	private static final String VIEW_RESOLVER_SUFFIX = ".jsp";
 
 	private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
 	private static final String PROPERTY_NAME_DATABASE_PASSWORD = "db.password";
@@ -52,8 +45,11 @@ public class ApplicationContext {
 	private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
 	private static final String PROPERTY_NAME_HIBERNATE_GENERATE_DDL = "hibernate.hbm2ddl.auto";
 
-	private static final String PROPERTY_NAME_MESSAGESOURCE_BASENAME = "message.source.basename";
-	private static final String PROPERTY_NAME_MESSAGESOURCE_USE_CODE_AS_DEFAULT_MESSAGE = "message.source.use.code.as.default.message";
+	// private static final String PROPERTY_NAME_MESSAGESOURCE_BASENAME =
+	// "message.source.basename";
+	// private static final String
+	// PROPERTY_NAME_MESSAGESOURCE_USE_CODE_AS_DEFAULT_MESSAGE =
+	// "message.source.use.code.as.default.message";
 
 	@Resource
 	private Environment environment;
@@ -75,15 +71,15 @@ public class ApplicationContext {
 	}
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean()
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory()
 			throws ClassNotFoundException {
-		final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+		final LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 
-		entityManagerFactoryBean.setDataSource(dataSource());
-		entityManagerFactoryBean
+		entityManagerFactory.setDataSource(dataSource());
+		entityManagerFactory
 				.setPackagesToScan(environment
 						.getRequiredProperty(PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN));
-		entityManagerFactoryBean
+		entityManagerFactory
 				.setPersistenceProviderClass(HibernatePersistence.class);
 
 		final Properties jpaProterties = new Properties();
@@ -98,43 +94,33 @@ public class ApplicationContext {
 		jpaProterties.put(PROPERTY_NAME_HIBERNATE_GENERATE_DDL, environment
 				.getRequiredProperty(PROPERTY_NAME_HIBERNATE_GENERATE_DDL));
 
-		entityManagerFactoryBean.setJpaProperties(jpaProterties);
+		entityManagerFactory.setJpaProperties(jpaProterties);
 
-		return entityManagerFactoryBean;
+		return entityManagerFactory;
 	}
 
-	@Bean
-	public MessageSource messageSource() {
-		final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-
-		messageSource.setBasename(environment
-				.getRequiredProperty(PROPERTY_NAME_MESSAGESOURCE_BASENAME));
-		messageSource
-				.setUseCodeAsDefaultMessage(Boolean.parseBoolean(environment
-						.getRequiredProperty(PROPERTY_NAME_MESSAGESOURCE_USE_CODE_AS_DEFAULT_MESSAGE)));
-
-		return messageSource;
-	}
+	// @Bean
+	// public MessageSource messageSource() {
+	// final ResourceBundleMessageSource messageSource = new
+	// ResourceBundleMessageSource();
+	//
+	// messageSource.setBasename(environment
+	// .getRequiredProperty(PROPERTY_NAME_MESSAGESOURCE_BASENAME));
+	// messageSource
+	// .setUseCodeAsDefaultMessage(Boolean.parseBoolean(environment
+	// .getRequiredProperty(PROPERTY_NAME_MESSAGESOURCE_USE_CODE_AS_DEFAULT_MESSAGE)));
+	//
+	// return messageSource;
+	// }
 
 	@Bean
 	public JpaTransactionManager transactionManager()
 			throws ClassNotFoundException {
 		final JpaTransactionManager transactionManager = new JpaTransactionManager();
 
-		transactionManager.setEntityManagerFactory(entityManagerFactoryBean()
+		transactionManager.setEntityManagerFactory(entityManagerFactory()
 				.getObject());
 
 		return transactionManager;
-	}
-
-	@Bean
-	public ViewResolver viewResolver() {
-		final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix(VIEW_RESOLVER_PREFIX);
-		viewResolver.setSuffix(VIEW_RESOLVER_SUFFIX);
-
-		return viewResolver;
 	}
 }

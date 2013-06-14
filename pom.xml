@@ -191,6 +191,12 @@
 			<artifactId>guava</artifactId>
 			<version>14.0.1</version>
 		</dependency>
+		<!-- Commons -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version>
+		</dependency>
 		<!-- Logging dependencies -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

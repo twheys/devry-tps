@@ -1,8 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<?xml version="1.0" encoding="UTF-8" ?>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Search Results</title>
+<title>Contact Page</title>
 <style type="text/css">
 <!--
 body {
@@ -106,11 +111,6 @@ a:hover,a:active,a:focus {
 .bold {
 	font-weight: bold;
 }
-
-.directions {
-	font-size: x-small;
-	color: #000;
-}
 -->
 </style>
 </head>
@@ -119,86 +119,53 @@ a:hover,a:active,a:focus {
 
 	<div class="container">
 		<div class="header">
-			<a href="#"><img src="Website Images/TPS2.png"
-				alt="Insert Logo Here" name="Insert_logo" width="960" height="200"
-				id="Insert_logo" style="background: #C6D580; display: block;" /></a>
+			<a href="home.html" th:href="@{/}"> 
+				<img th:src="@{/r/logo_big.png}" src="../static/logo_big.png" alt="Insert Logo Here"
+				name="Insert_logo" width="960" height="200" id="Insert_logo"
+				style="background: #C6D580; display: block;" />
+			</a>
 			<!-- end .header -->
 		</div>
 		<div class="content">
-			<table width="958" border="0">
+			<table width="903" border="0">
 				<tr>
-					<td width="423" bgcolor="#FFFFFF" class="TableHeader2"><div
-							align="center">
-							New Search <br />
-						</div>
-						<div align="center">
-							<span class="directions"> <br />enter search criteria
-							</span>
-						</div></td>
-					<td width="157" rowspan="2">
-						</p>
-					</td>
-					<td width="324" class="TableHeader2"><div align="center">Search
-							Results</div></td>
+					<td width="350" bgcolor="#FFFFFF" class="TableHeader2"><div
+							align="center">About US</div></td>
+					<td width="233"></td>
+					<td width="306" class="TableHeader2"><div align="center">Contact
+							Information</div></td>
 				</tr>
 				<tr>
-					<td><form action="staffSearch_form.asp">
-							<p align="left">
-								Years of Experience: <input name="txtExperience" type="text"
-									size="3" maxlength="2" /> <br />
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desired Salary: <input
-									name="txtSalary" type="text" size="8" maxlength="6" /> <br />
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Education:
-								<select name="select">
-									<option value="High School">High School</option>
-									<option value="Associates">Associates</option>
-									<option value="Bachelors">Bachelors</option>
-									<option value="Masters">Masters</option>
-									<option value="Doctorate">Doctorate</option>
-								</select> <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City:
-								<select name="select">
-									<option value="Alpena" selected="selected">Alpena</option>
-									<option value="Gaylord">Gaylord</option>
-									<option value="Harbor Springs">Harbor Springs</option>
-									<option value="Petoskey">Petoskey</option>
-									<option value="Wolverine">Wolverine</option>
-								</select> <br /> <br />
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<input name="btnSearch" type="button" id="btnSearch"
-									value="Search" />
-								<!--This button should perform the search and open the search results page where it displays staff meeting the criteria-->
-								&nbsp;&nbsp;&nbsp; <input name="btnCancel" type="reset"
-									id="btnCancel" value="Cancel" />
-						</form>
-
-						<td><table width="320" border="0">
-								<tr>
-									<td width="105" rowspan="5">&lt;Display Picture&gt;</td>
-									<td width="205">&lt;Staff ID&gt;</td>
-								</tr>
-								<tr>
-									<td>&lt;Years of EXP&gt;</td>
-								</tr>
-								<tr>
-									<td>&lt;Education&gt;</td>
-								</tr>
-								<tr>
-									<td>&lt;Desired Salary&gt;</td>
-								</tr>
-								<tr>
-									<td>&lt;Location&gt;</td>
-								</tr>
-							</table></td>
-						<td width="36"><p>&nbsp;</p></td>
+					<td><p>Taylor Professional Services has been helping our
+							clients find the best possible candidates to fill positions of
+							need for over 20 years.</p>
+						<p>Your business, is our business, the people business.</p></td>
+					<td></td>
+					<td><p>
+							<span class="bold">Phone:</span> (555) 555-5555
+						</p>
+						<p>
+							<span class="bold">Fax:</span>
+							(555) 555-5556
+						</p>
+						<p>
+							<span class="bold">Address:</span> 123 TPS Lane
+						</p>
+						<p>
+							Gaylord,
+							Mi 49735
+						</p>
+						<p>
+							<span class="bold">Email:</span> info@tps.com
+						</p></td>
 				</tr>
 			</table>
-			<h1 align="right" class="directions">Display the above</h1>
-			<p align="right" class="directions">For each mataching staff</p>
+			<h1></h1>
 			<!-- end .content -->
 		</div>
 		<div class="footer">
 			<p>
-				<a href="Home Page.html">Contact Us</a>
+				<a href="contact.html" th:href="@{/contact}">Contact Us</a>
 			</p>
 			<!-- end .footer -->
 		</div>

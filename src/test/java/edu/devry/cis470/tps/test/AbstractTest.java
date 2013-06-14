@@ -54,11 +54,11 @@ public abstract class AbstractTest {
 			final String location, final EducationLevel educationLevel,
 			final Integer desiredSalary, final Integer yearsExperience)
 			throws NonUniqueUsernameException {
-		if (null != staffRepository.findByUsername(username))
+		if (null != staffRepository.findByUserName(username))
 			throw new NonUniqueUsernameException();
 
 		final Staff staff = new Staff();
-		staff.setUsername(username);
+		staff.setUserName(username);
 		staff.setPassword("123");
 		staff.setEmail(username + "@email.com");
 		staff.setCity(location);

@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import edu.devry.cis470.tps.domain.EducationLevel;
 import edu.devry.cis470.tps.domain.Staff;
-import edu.devry.cis470.tps.service.dto.UpdateStaffRequest;
+import edu.devry.cis470.tps.service.dto.UpdateProfileRequest;
 import edu.devry.cis470.tps.service.impl.NonUniqueUsernameException;
 import edu.devry.cis470.tps.test.AbstractTest;
 
@@ -26,7 +26,7 @@ public class StaffServiceTest extends AbstractTest {
 				"staff01@email.com");
 
 		assertNotNull(staff.getId());
-		assertEquals(username, staff.getUsername());
+		assertEquals(username, staff.getUserName());
 		assertEquals(password, staff.getPassword());
 	}
 
@@ -50,13 +50,13 @@ public class StaffServiceTest extends AbstractTest {
 		final EducationLevel educationLevel = EducationLevel.BACHELORS;
 		final Integer yearsExperience = 5;
 
-		final UpdateStaffRequest request = new UpdateStaffRequest();
+		final UpdateProfileRequest request = new UpdateProfileRequest();
 		request.setCity(city);
 		request.setDesiredSalary(desiredSalary);
 		request.setEducationLevel(educationLevel.toString());
 		request.setYearsExperience(yearsExperience);
-		final Staff updatedStaff = staffService.updateStaff(staff.getId(),
-				request);
+		final Staff updatedStaff = staffService.updateStaff(
+				staff.getUserName(), request);
 
 		assertEquals(city, updatedStaff.getCity());
 		assertEquals(desiredSalary, updatedStaff.getDesiredSalary());
@@ -73,7 +73,7 @@ public class StaffServiceTest extends AbstractTest {
 				.toByteArray(loadPicture("/test_pic.jpg"));
 
 		final Staff updatedStaff = staffService.updateStaffPicture(
-				staff.getId(), loadPicture("/test_pic.jpg"));
+				staff.getUserName(), loadPicture("/test_pic.jpg"));
 
 		assertTrue(Arrays.equals(pictureData, updatedStaff.getPicture()));
 	}
