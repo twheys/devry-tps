@@ -1,9 +1,10 @@
 package edu.devry.cis470.tps.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Staff extends User {
@@ -14,8 +15,8 @@ public class Staff extends User {
 	private Integer desiredSalary;
 	@Enumerated(EnumType.STRING)
 	private EducationLevel educationLevel;
-	@Lob
-	private byte[] picture;
+	@OneToOne(cascade = CascadeType.ALL)
+	private Picture picture;
 	private Integer yearsExperience;
 
 	public Staff() {
@@ -42,7 +43,7 @@ public class Staff extends User {
 		return lastName;
 	}
 
-	public byte[] getPicture() {
+	public Picture getPicture() {
 		return picture;
 	}
 
@@ -70,7 +71,7 @@ public class Staff extends User {
 		this.lastName = lastName;
 	}
 
-	public void setPicture(final byte[] picture) {
+	public void setPicture(final Picture picture) {
 		this.picture = picture;
 	}
 

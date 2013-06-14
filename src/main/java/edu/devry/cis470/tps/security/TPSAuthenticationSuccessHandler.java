@@ -35,7 +35,7 @@ public class TPSAuthenticationSuccessHandler implements
 			}
 		}
 
-		response.sendRedirect("/login");
+		response.sendRedirect("login");
 	}
 
 }

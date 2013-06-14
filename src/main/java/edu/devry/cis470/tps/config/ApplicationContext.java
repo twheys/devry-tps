@@ -45,12 +45,6 @@ public class ApplicationContext {
 	private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
 	private static final String PROPERTY_NAME_HIBERNATE_GENERATE_DDL = "hibernate.hbm2ddl.auto";
 
-	// private static final String PROPERTY_NAME_MESSAGESOURCE_BASENAME =
-	// "message.source.basename";
-	// private static final String
-	// PROPERTY_NAME_MESSAGESOURCE_USE_CODE_AS_DEFAULT_MESSAGE =
-	// "message.source.use.code.as.default.message";
-
 	@Resource
 	private Environment environment;
 
@@ -98,20 +92,6 @@ public class ApplicationContext {
 
 		return entityManagerFactory;
 	}
-
-	// @Bean
-	// public MessageSource messageSource() {
-	// final ResourceBundleMessageSource messageSource = new
-	// ResourceBundleMessageSource();
-	//
-	// messageSource.setBasename(environment
-	// .getRequiredProperty(PROPERTY_NAME_MESSAGESOURCE_BASENAME));
-	// messageSource
-	// .setUseCodeAsDefaultMessage(Boolean.parseBoolean(environment
-	// .getRequiredProperty(PROPERTY_NAME_MESSAGESOURCE_USE_CODE_AS_DEFAULT_MESSAGE)));
-	//
-	// return messageSource;
-	// }
 
 	@Bean
 	public JpaTransactionManager transactionManager()

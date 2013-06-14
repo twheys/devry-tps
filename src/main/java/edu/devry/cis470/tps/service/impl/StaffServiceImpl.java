@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.devry.cis470.tps.domain.EducationLevel;
+import edu.devry.cis470.tps.domain.Picture;
 import edu.devry.cis470.tps.domain.Staff;
 import edu.devry.cis470.tps.repository.StaffRepository;
 import edu.devry.cis470.tps.service.StaffService;
@@ -29,8 +30,9 @@ public class StaffServiceImpl implements StaffService {
 	@Transactional
 	public Staff createNewStaff(final String userName, final String password,
 			final String email) throws NonUniqueUsernameException {
-		if (null != staffRepository.findByUserName(userName))
+		if (null != staffRepository.findByUserName(userName)) {
 			throw new NonUniqueUsernameException();
+		}
 
 		final Staff staff = new Staff();
 		staff.setUserName(userName);
@@ -43,8 +45,9 @@ public class StaffServiceImpl implements StaffService {
 	public Staff getStaff(final String userName) throws NotFoundException {
 		LOG.info("Locating staff by user name: {}", userName);
 		final Staff staff = staffRepository.findByUserName(userName);
-		if (null == staff)
+		if (null == staff) {
 			throw new NotFoundException(userName);
+		}
 
 		return staff;
 	}
@@ -53,8 +56,9 @@ public class StaffServiceImpl implements StaffService {
 	@Transactional
 	public Staff updateStaff(final String userName,
 			final UpdateProfileRequest request) {
-		final EducationLevel educationLevel = EducationLevel.valueOf(request
-				.getEducationLevel());
+		final EducationLevel educationLevel = null != request
+				.getEducationLevel() ? EducationLevel.valueOf(request
+				.getEducationLevel()) : null;
 
 		final Staff staff = staffRepository.findByUserName(userName);
 		staff.setFirstName(request.getFirstName());
@@ -68,11 +72,16 @@ public class StaffServiceImpl implements StaffService {
 
 	@Override
 	public Staff updateStaffPicture(final String userName,
-			final InputStream stream) throws IOException {
+			final InputStream stream, final String contentType)
+			throws IOException {
 		final Staff staff = staffRepository.findByUserName(userName);
 
 		final byte[] pictureData = IOUtils.toByteArray(stream);
-		staff.setPicture(pictureData);
+		final Picture picture = new Picture();
+		picture.setBytes(pictureData);
+		picture.setImageType(contentType);
+
+		staff.setPicture(picture);
 		return staffRepository.save(staff);
 	}
 

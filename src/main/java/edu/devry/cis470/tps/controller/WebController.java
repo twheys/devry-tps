@@ -1,10 +1,11 @@
 package edu.devry.cis470.tps.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.devry.cis470.tps.controller.dto.CreateContractForm;
@@ -47,7 +48,7 @@ public interface WebController {
 	ModelAndView updateProfile(@ModelAttribute("profile") UpdateProfileForm form);
 
 	@RequestMapping(value = "/pic/{staffUserName}", method = RequestMethod.GET, produces = "image/*")
-	@ResponseBody
-	byte[] viewPicture(@PathVariable String staffUserName);
+	void viewPicture(@PathVariable String staffUserName,
+			HttpServletResponse response);
 
 }

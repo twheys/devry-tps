@@ -73,8 +73,9 @@ public class StaffServiceTest extends AbstractTest {
 				.toByteArray(loadPicture("/test_pic.jpg"));
 
 		final Staff updatedStaff = staffService.updateStaffPicture(
-				staff.getUserName(), loadPicture("/test_pic.jpg"));
+				staff.getUserName(), loadPicture("/test_pic.jpg"), "image/jpg");
 
-		assertTrue(Arrays.equals(pictureData, updatedStaff.getPicture()));
+		assertTrue(Arrays.equals(pictureData, updatedStaff.getPicture()
+				.getBytes()));
 	}
 }

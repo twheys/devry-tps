@@ -17,6 +17,6 @@ public interface StaffService {
 
 	Staff updateStaff(String userName, UpdateProfileRequest request);
 
-	Staff updateStaffPicture(String userName, InputStream stream)
-			throws IOException;
+	Staff updateStaffPicture(String userName, InputStream stream,
+			String contentType) throws IOException;
 }

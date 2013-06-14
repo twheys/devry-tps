@@ -1,8 +1,12 @@
 package edu.devry.cis470.tps.controller.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -25,6 +29,7 @@ import edu.devry.cis470.tps.controller.dto.SearchForm;
 import edu.devry.cis470.tps.controller.dto.UpdatePictureForm;
 import edu.devry.cis470.tps.controller.dto.UpdateProfileForm;
 import edu.devry.cis470.tps.domain.Client;
+import edu.devry.cis470.tps.domain.Picture;
 import edu.devry.cis470.tps.domain.Staff;
 import edu.devry.cis470.tps.domain.StaffingContract;
 import edu.devry.cis470.tps.security.TPSUserService;
@@ -41,10 +46,10 @@ import edu.devry.cis470.tps.service.impl.NotFoundException;
 public class WebControllerImpl implements WebController {
 
 	private static final String USER_NAME_OR_PASSWORD_IS_INCORRECT = "User name or password is incorrect.";
+
 	private static final String INVALID_FILE = "File uploaded is not a valid file.";
 
 	private final byte[] DEFAULT_PICTURE;
-
 	private static final Logger LOG = LoggerFactory
 			.getLogger(WebController.class);
 
@@ -72,8 +77,9 @@ public class WebControllerImpl implements WebController {
 	public ModelAndView contractPage(final Long contractId) {
 		final StaffingContract contract = clientService
 				.getStaffingContract(contractId);
-		if (null == contract)
+		if (null == contract) {
 			throw new Http404Exception();
+		}
 
 		final ModelAndView mav = new ModelAndView("contract");
 		return mav;
@@ -149,9 +155,10 @@ public class WebControllerImpl implements WebController {
 	@Override
 	public ModelAndView createUser(final RegisterForm form) {
 		LOG.info("Attempting to register new user: {}", form);
-		if (!form.getPassword().equals(form.getPasswordConfirm()))
+		if (!form.getPassword().equals(form.getPasswordConfirm())) {
 			return homeWithRegistrationError(form,
 					"Provided passwords don't match!");
+		}
 
 		switch (form.getUserType()) {
 		case CLIENT:
@@ -257,7 +264,8 @@ public class WebControllerImpl implements WebController {
 		final String userName = getLoggedInUserName();
 		LOG.info("Uploading new picture for staff: {}", userName);
 		try {
-			staffService.updateStaffPicture(userName, file.getInputStream());
+			staffService.updateStaffPicture(userName, file.getInputStream(),
+					file.getContentType());
 			return new ModelAndView("redirect:/profile");
 		} catch (final IOException e) {
 			throw new Http500Exception();
@@ -272,17 +280,24 @@ public class WebControllerImpl implements WebController {
 	}
 
 	@Override
-	public byte[] viewPicture(@PathVariable final String staffUserName) {
+	public void viewPicture(@PathVariable final String staffUserName,
+			final HttpServletResponse response) {
 		LOG.info("Viewing picture for staff: {}", staffUserName);
 		try {
 			final Staff staff = staffService.getStaff(staffUserName);
-			final byte[] pictureData = staff.getPicture();
-			if (null == pictureData)
-				return DEFAULT_PICTURE;
-			else
-				return pictureData;
+			final Picture picture = staff.getPicture();
+			InputStream is;
+			if (null == picture) {
+				is = new ByteArrayInputStream(DEFAULT_PICTURE);
+			} else {
+				is = new ByteArrayInputStream(picture.getBytes());
+			}
+			IOUtils.copy(is, response.getOutputStream());
+			response.setContentType(picture.getImageType());
 		} catch (final NotFoundException e) {
 			throw new Http404Exception();
+		} catch (final IOException e) {
+			throw new Http500Exception();
 		}
 	}
 

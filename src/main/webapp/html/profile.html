@@ -140,7 +140,7 @@ a:hover,a:active,a:focus {
 						<br /> <br />
 						<p align="center">
 							<span class="container">
-							<img th:src="@{'/pic/' + ${userName}}" alt="" width="256" height="256" id="UploadedPicture" /> 
+							<img th:src="@{'/pic/' + ${userName}}" alt="" height="256" id="UploadedPicture" /> 
 							</span>
 							<form method="post" th:action="@{/profile/picture}" action="#"
 								  th:object="${picture}" enctype="multipart/form-data" >
