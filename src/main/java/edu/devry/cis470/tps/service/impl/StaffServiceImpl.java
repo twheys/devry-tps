@@ -15,6 +15,7 @@ import edu.devry.cis470.tps.domain.Picture;
 import edu.devry.cis470.tps.domain.Staff;
 import edu.devry.cis470.tps.repository.StaffRepository;
 import edu.devry.cis470.tps.service.StaffService;
+import edu.devry.cis470.tps.service.UserNameService;
 import edu.devry.cis470.tps.service.dto.UpdateProfileRequest;
 
 @Service
@@ -26,13 +27,14 @@ public class StaffServiceImpl implements StaffService {
 	@Autowired
 	private StaffRepository staffRepository;
 
+	@Autowired
+	private UserNameService userNameService;
+
 	@Override
 	@Transactional
 	public Staff createNewStaff(final String userName, final String password,
 			final String email) throws NonUniqueUsernameException {
-		if (null != staffRepository.findByUserName(userName)) {
-			throw new NonUniqueUsernameException();
-		}
+		userNameService.verifyUnique(userName);
 
 		final Staff staff = new Staff();
 		staff.setUserName(userName);
@@ -45,9 +47,8 @@ public class StaffServiceImpl implements StaffService {
 	public Staff getStaff(final String userName) throws NotFoundException {
 		LOG.info("Locating staff by user name: {}", userName);
 		final Staff staff = staffRepository.findByUserName(userName);
-		if (null == staff) {
+		if (null == staff)
 			throw new NotFoundException(userName);
-		}
 
 		return staff;
 	}

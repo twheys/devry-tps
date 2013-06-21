@@ -59,7 +59,7 @@ public abstract class AbstractTest {
 
 		final Staff staff = new Staff();
 		staff.setUserName(username);
-		staff.setPassword("123");
+		staff.setPassword("abc123");
 		staff.setEmail(username + "@email.com");
 		staff.setCity(location);
 		staff.setEducationLevel(educationLevel);

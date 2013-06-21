@@ -21,7 +21,7 @@ public class StaffServiceTest extends AbstractTest {
 	@Test
 	public void testCreateNewStaff() throws NonUniqueUsernameException {
 		final String username = "staff01";
-		final String password = "123456";
+		final String password = "abc123";
 		final Staff staff = staffService.createNewStaff(username, password,
 				"staff01@email.com");
 
@@ -33,15 +33,15 @@ public class StaffServiceTest extends AbstractTest {
 	@Test(expected = NonUniqueUsernameException.class)
 	public void testUniqueUsernameConstraint()
 			throws NonUniqueUsernameException {
-		staffService.createNewStaff("staff08", "123", "staff08@email.com");
-		staffService.createNewStaff("staff08", "123", "staff08@email.com");
+		staffService.createNewStaff("staff08", "abc123", "staff08@email.com");
+		staffService.createNewStaff("staff08", "abc123", "staff08@email.com");
 	}
 
 	@Test
 	public void testUpdateStaff() throws NonUniqueUsernameException,
 			IOException {
 		final String username = "staff01";
-		final String password = "123456";
+		final String password = "abc123";
 		final Staff staff = staffService.createNewStaff(username, password,
 				"staff01@email.com");
 
@@ -67,7 +67,7 @@ public class StaffServiceTest extends AbstractTest {
 	@Test
 	public void testUpdateStaffPicture() throws NonUniqueUsernameException,
 			IOException {
-		final Staff staff = staffService.createNewStaff("staff01", "123456",
+		final Staff staff = staffService.createNewStaff("staff01", "abc123",
 				"staff01@email.com");
 		final byte[] pictureData = IOUtils
 				.toByteArray(loadPicture("/test_pic.jpg"));

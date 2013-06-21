@@ -2,6 +2,8 @@ package edu.devry.cis470.tps.service.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +21,14 @@ import edu.devry.cis470.tps.repository.StaffRepository;
 import edu.devry.cis470.tps.repository.StaffingContractRepository;
 import edu.devry.cis470.tps.service.ClientService;
 import edu.devry.cis470.tps.service.EducationLevelService;
+import edu.devry.cis470.tps.service.UserNameService;
 import edu.devry.cis470.tps.service.dto.BrowseRequest;
 import edu.devry.cis470.tps.service.dto.StaffingContractRequest;
 
 @Service
 public class ClientServiceImpl implements ClientService {
+	private static final Logger LOG = LoggerFactory
+			.getLogger(ClientService.class);
 
 	@Autowired
 	private ClientRepository clientRepository;
@@ -36,6 +41,9 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private EducationLevelService educationLevelComparator;
+
+	@Autowired
+	private UserNameService userNameService;
 
 	private BooleanExpression addClause(final BooleanExpression query,
 			final BooleanExpression and) {
@@ -84,13 +92,12 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	@Transactional
-	public Client createNewClient(final String username, final String password,
+	public Client createNewClient(final String userName, final String password,
 			final String email) throws NonUniqueUsernameException {
-		if (null != clientRepository.findByUserName(username))
-			throw new NonUniqueUsernameException();
+		userNameService.verifyUnique(userName);
 
 		final Client client = new Client();
-		client.setUserName(username);
+		client.setUserName(userName);
 		client.setPassword(password);
 		client.setEmail(email);
 		return clientRepository.save(client);
@@ -111,6 +118,8 @@ public class ClientServiceImpl implements ClientService {
 				.getStaffIds());
 		contract.setDesiredStaff(Lists.newArrayList(desiredStaff));
 		contract.setClient(client);
+
+		LOG.info("Persisting new Contract: {}", contract);
 		return staffingContractRepository.save(contract);
 	}
 

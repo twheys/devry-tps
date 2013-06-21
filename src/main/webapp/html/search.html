@@ -183,11 +183,12 @@ a:hover,a:active,a:focus {
 					<td>
 						<p th:if="${#lists.isEmpty(results)}">There were no search results.</p>
 						<form action="#" th:action="@{/contract/create}" method="post" th:object="${contract}" th:if="${not #lists.isEmpty(results)}">
+						<input type="hidden" th:field="*{desiredSalary}"/>
+						<input type="hidden" th:field="*{location}"/>
+						
 						<table width="320" border="0" th:if="${not #lists.isEmpty(results)}">
 						<tr th:each="staff : ${results}"> 
 						<td>
-							<input type="hidden" th:field="*{desiredSalary}"/>
-							<input type="hidden" th:field="*{location}"/>
 							<table >
 								<tr>
 								<td width="105" rowspan="5">
@@ -195,7 +196,7 @@ a:hover,a:active,a:focus {
 								</td>
 								<td width="205">
 									<span th:text="${staff.firstName + ' ' + staff.lastName}">Test User</span>
-									<input type="checkbox" th:field="*{location}" th:value="${staff.id}"/>
+									<input type="checkbox" th:field="*{candidates}" th:value="${staff.id}"/>
 								</td>
 								</tr>
 								<tr>

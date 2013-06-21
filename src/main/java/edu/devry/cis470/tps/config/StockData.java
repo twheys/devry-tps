@@ -17,7 +17,8 @@ public class StockData {
 			final String lastName, final int exp, final int desiredSalary,
 			final EducationLevel edu, final String city) throws Exception {
 		final String userName = "test_staff" + num;
-		staffService.createNewStaff(userName, "test", userName + "test.com");
+		staffService.createNewStaff(userName, "test12345", userName
+				+ "@test.com");
 		final UpdateProfileRequest request = new UpdateProfileRequest();
 		request.setFirstName(firstName);
 		request.setLastName(lastName);

@@ -5,18 +5,32 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class Staff extends User {
 
+	@Pattern(regexp = "^[a-zA-Z]*$", message = "Your first name must only contain letters.")
+	@Length(min = 1, max = 56)
 	private String firstName;
+
+	@Pattern(regexp = "^[a-zA-Z]*$", message = "Your last name must only contain letters.")
+	@Length(min = 1, max = 128)
 	private String lastName;
+
+	@Length(min = 1, max = 56)
 	private String city;
+
 	private Integer desiredSalary;
+
 	@Enumerated(EnumType.STRING)
 	private EducationLevel educationLevel;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private Picture picture;
+
 	private Integer yearsExperience;
 
 	public Staff() {
@@ -77,6 +91,14 @@ public class Staff extends User {
 
 	public void setYearsExperience(final Integer yearsExperience) {
 		this.yearsExperience = yearsExperience;
+	}
+
+	@Override
+	public String toString() {
+		return "Staff [firstName=" + firstName + ", lastName=" + lastName
+				+ ", city=" + city + ", desiredSalary=" + desiredSalary
+				+ ", educationLevel=" + educationLevel + ", picture=" + picture
+				+ ", yearsExperience=" + yearsExperience + "]";
 	}
 
 }

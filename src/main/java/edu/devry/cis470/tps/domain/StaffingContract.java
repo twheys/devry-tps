@@ -66,7 +66,8 @@ public class StaffingContract extends IdEntity {
 
 	@Override
 	public String toString() {
-		return "StaffingContract [id=" + super.getId() + ", location="
-				+ location + ", desiredSalary=" + desiredSalary + "]";
+		return "StaffingContract [desiredSalary=" + desiredSalary
+				+ ", desiredStaff=" + desiredStaff + ", location=" + location
+				+ ", status=" + status + ", client=" + client + "]";
 	}
 }
